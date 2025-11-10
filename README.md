@@ -1,59 +1,89 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ⚙️ خطوات إعداد مشروع TOM-TRAVEL-BACKEND
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. 📁 تثبيت المشروع داخل مجلد `htdocs`
+لأن المشروع يعمل باستخدام XAMPP و MySQL، يجب وضعه داخل المسار:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```
+C:\xampp\htdocs\
+```
 
-## Learning Laravel
+> هذا يضمن أن السيرفر المحلي يتعرف عليه بشكل صحيح عند تشغيل `php artisan serve`.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. 📝 تغيير اسم ملف البيئة
+المشروع يحتوي على ملف إعداد بيئة باسم `.env.example`. يجب إعادة تسميته إلى `.env`:
 
-## Laravel Sponsors
+####  يدويًا:
+- اضغط يمين على الملف واختر "Rename".
+- غيّر الاسم إلى `.env`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+### 3. 📦 تثبيت حزم Laravel
+بعد فتح المشروع في الطرفية، نفذ الأمر التالي لتثبيت الحزم المطلوبة:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer install
+```
 
-## Contributing
+> هذا ينشئ مجلد `vendor/` ويحل مشكلة autoload.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+### 4. 🔐 توليد مفتاح التشفير
+Laravel يحتاج مفتاح تشفير لتشغيل الجلسات والتشفير. نفذ الأمر التالي:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+> يتم توليد المفتاح تلقائيًا داخل ملف `.env` في السطر `APP_KEY=...`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+### 5. 🛠️ إعداد الاتصال بقاعدة البيانات
+افتح ملف `.env` وعدّل إعدادات الاتصال لتكون كالتالي:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=tom_db
+DB_USERNAME=root
+DB_PASSWORD=كلمة_المرور
+```
+
+> تأكد أن قاعدة البيانات `tom_db` موجودة في MySQL. إذا لم تكن موجودة، أنشئها يدويًا:
+
+```sql
+CREATE DATABASE tom_db;
+```
+
+---
+
+### 6. 📤 ترحيل المهاجرات (migrations)
+بعد إعداد الاتصال بقاعدة البيانات، شغّل الأمر التالي لإنشاء الجداول داخل `tom_db`:
+
+```bash
+php artisan migrate
+```
+
+> هذا الأمر ينفذ جميع ملفات المهاجرات ويجهز الجداول تلقائيًا.
+
+---
+
+### ✅ بعد تنفيذ هذه الخطوات
+يمكنك تشغيل السيرفر المحلي باستخدام:
+
+```bash
+php artisan serve
+```
+
+---
+
+
