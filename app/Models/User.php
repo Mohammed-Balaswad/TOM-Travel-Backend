@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'profile_image',
+        'role',
     ];
 
     /**
@@ -44,5 +47,35 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function flightBookings()
+    {
+        return $this->hasMany(FlightBooking::class);
+    }
+
+    public function hotelBookings()
+    {
+        return $this->hasMany(HotelBooking::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
     }
 }
