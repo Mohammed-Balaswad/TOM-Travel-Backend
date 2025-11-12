@@ -33,4 +33,9 @@ class Destination extends Model
     {
         return $this->hasMany(Attraction::class);
     }
+
+    public function reviews()
+    {
+    return $this->morphMany(Review::class, 'reviewable');
+    }
 }

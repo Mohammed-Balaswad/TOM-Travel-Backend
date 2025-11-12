@@ -34,4 +34,9 @@ class Attraction extends Model
     {
         return $this->hasMany(AttractionImage::class);
     }
+
+    public function reviews()
+    {
+    return $this->morphMany(Review::class, 'reviewable');
+    }
 }

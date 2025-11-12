@@ -37,4 +37,9 @@ class Hotel extends Model
     {
         return $this->hasMany(HotelBooking::class);
     }
+    
+    public function reviews()
+    {
+    return $this->morphMany(Review::class, 'reviewable');
+    }
 }
