@@ -5,6 +5,7 @@ namespace App\Http\Controllers\UserProfile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
@@ -23,26 +24,42 @@ class ProfileController extends Controller
 
     //  تحديث بيانات المستخدم
     public function update(Request $request)
-    {
-        $user = Auth::user();
+{
+    $user = User::find(Auth::id());
 
-        $validated = $request->validate([
-            'name' => 'sometimes|string|max:150',
-            'phone' => 'nullable|string|max:30',
-            'profile_image' => 'nullable|string|max:500',
-            'password' => 'nullable|string|min:6|confirmed',
-        ]);
+    $validated = $request->validate([
+        'name' => 'sometimes|string|max:150',
+        'email' => 'sometimes|email|max:150|unique:users,email,' . $user->id,
+        'phone' => 'nullable|string|max:30',
+        'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'password' => 'nullable|string|min:6',
+    ]);
 
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        }
-
-        //$user->update($validated);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Profile updated successfully',
-            'data' => $user,
-        ]);
+    if ($request->hasFile('profile_image')) {
+        $path = $request->file('profile_image')->store('profiles', 'public');
+        $validated['profile_image'] = $path;
     }
+    
+    if (isset($validated['password'])) {
+        $validated['password'] = Hash::make($validated['password']);
+    }
+
+    $user->update($validated);
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Profile updated successfully',
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'profile_image' => $user->profile_image
+                ? asset('storage/' . $user->profile_image)
+                : null,
+            'role' => $user->role,
+        ],
+    ], 200);
+}
+
 }

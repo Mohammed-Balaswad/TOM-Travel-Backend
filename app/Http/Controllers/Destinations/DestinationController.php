@@ -14,11 +14,7 @@ class DestinationController extends Controller
             ->orderByDesc('average_rating')
             ->paginate(10);
 
-        return response()->json([
-            'status' => true,
-            'count' => $destinations->count(),
-            'data' => $destinations
-        ], 200);
+        return response()->json($destinations);
     }
 
     
