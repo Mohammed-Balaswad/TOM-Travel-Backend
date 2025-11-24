@@ -23,8 +23,9 @@ class ProfileController extends Controller
     }
 
     //  تحديث بيانات المستخدم
-    public function update(Request $request)
+public function update(Request $request)
 {
+    
     $user = User::find(Auth::id());
 
     $validated = $request->validate([
@@ -32,17 +33,12 @@ class ProfileController extends Controller
         'email' => 'sometimes|email|max:150|unique:users,email,' . $user->id,
         'phone' => 'nullable|string|max:30',
         'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'password' => 'nullable|string|min:6',
     ]);
 
     if ($request->hasFile('profile_image')) {
-        $path = $request->file('profile_image')->store('profiles', 'public');
+        $path = $request->file('profile_image')->store('profile_images', 'public');
         $validated['profile_image'] = $path;
-    }
-    
-    if (isset($validated['password'])) {
-        $validated['password'] = Hash::make($validated['password']);
-    }
+    }   
 
     $user->update($validated);
 
@@ -54,9 +50,7 @@ class ProfileController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
-            'profile_image' => $user->profile_image
-                ? asset('storage/' . $user->profile_image)
-                : null,
+            'profile_image' => $user->profile_image ? asset('storage/' . $user->profile_image) : null,
             'role' => $user->role,
         ],
     ], 200);
