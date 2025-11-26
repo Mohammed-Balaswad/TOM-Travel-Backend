@@ -18,8 +18,7 @@ use App\Http\Controllers\Notifications\NotificationController;
 use App\Http\Controllers\Favorites\FavoriteController;
 use App\Http\Controllers\UserProfile\ProfileController;
 use App\Http\Controllers\UserTrips\MyTripController;
-
-
+use App\Http\Controllers\Search\SearchController;
 
 // Auth
 Route::post('/register', [AuthController::class, 'register']);
@@ -164,4 +163,9 @@ Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
 Route::middleware('auth:sanctum')->prefix('my-trips')->group(function () {
     Route::get('/', [MyTripController::class, 'index']);
 });
+
+
+//  Search
+Route::get('/search', [SearchController::class, 'search']);
+
 

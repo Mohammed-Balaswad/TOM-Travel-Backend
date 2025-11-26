@@ -14,7 +14,13 @@ class DestinationController extends Controller
             ->orderByDesc('average_rating')
             ->paginate(10);
 
-        return response()->json($destinations);
+            foreach ($destinations as $destination) {
+                if ($destination->image) {
+                    $destination->image = asset('storage/' . $destination->image);
+                }
+            }
+
+        return response()->json(data: $destinations);
     }
 
     
@@ -27,6 +33,10 @@ class DestinationController extends Controller
         'attractions',
         'reviews.user'
     ])->find($id);
+
+     if ($destination->image) {
+                    $destination->image = asset('storage/' . $destination->image);
+                }
 
     if (!$destination) {
         return response()->json([

@@ -17,17 +17,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        // $this->call([
-        //     DestinationSeeder::class,
-        // ]);
+        $this->call([
+            DestinationSeeder::class,
+        ]);
 
         // $this->call([
         //     HotelSeeder::class,
         // ]);
 
-        $this->call([
-            RoomSeeder::class,
-        ]);
+        // $this->call([
+        //     RoomSeeder::class,
+        // ]);
     
         
 
