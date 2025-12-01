@@ -55,7 +55,7 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=tom_db
 DB_USERNAME=root
-DB_PASSWORD=كلمة_المرور
+DB_PASSWORD=
 ```
 
 > تأكد أن قاعدة البيانات `tom_db` موجودة في MySQL. إذا لم تكن موجودة، أنشئها يدويًا:
