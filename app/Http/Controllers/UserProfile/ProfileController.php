@@ -14,6 +14,7 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
+        
 
         return response()->json([
             'status' => true,

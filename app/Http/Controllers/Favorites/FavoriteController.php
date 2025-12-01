@@ -6,18 +6,32 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class FavoriteController extends Controller
 {
     //  عرض المفضلات
     public function index()
     {
-        $favorites = Favorite::where('user_id', Auth::id())->get();
+        $favorites = Favorite::with('favorable')
+            ->where('user_id', Auth::id())
+            ->get();
 
+            foreach ($favorites as $fav) {
+                if ($fav->favorable && isset($fav->favorable->image)) {
+                    $image = $fav->favorable->image;
+        
+                    if ($image && !Str::startsWith($image, ['http://', 'https://'])) {
+                        $fav->favorable->image = asset('storage/' . $image);
+                    }
+                }
+            }
+        
+    
         if ($favorites->isEmpty()) {
             return response()->json(['message' => 'No favorites found'], 404);
         }
-        
+    
         return response()->json([
             'status' => true,
             'count' => $favorites->count(),

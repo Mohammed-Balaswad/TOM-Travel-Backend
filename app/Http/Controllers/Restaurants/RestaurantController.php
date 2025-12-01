@@ -13,7 +13,12 @@ class RestaurantController extends Controller
     public function index()
     {
         $restaurants = Restaurant::with('dishes')->get();
-
+        
+        foreach ($restaurants as $restaurant) {
+            if ($restaurant->image) {
+                $restaurant->image = asset('storage/' . $restaurant->image);
+            }
+        }
         return response()->json([
             'status' => true,
             'count' => $restaurants->count(),
